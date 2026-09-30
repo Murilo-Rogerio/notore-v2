@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/AuthContext'
 import { authErrorMessage } from '../lib/utils'
 import { Button, GoogleIcon, Input, Logo } from '../components/ui'
+import { supabase } from '../lib/supabase'
 
 type Mode = 'signin' | 'signup'
 
