@@ -22,7 +22,7 @@ export default function Dashboard() {
   const toast = useToast()
 
   const [quickUrl, setQuickUrl] = useState('')
-  const [editor, setEditor] = useState<{ note: Note | null; kind: NoteKind; due?: string | null } | null>(null)
+ const [editor, setEditor] = useState<{ note: Note | null; kind?: NoteKind; due?: string | null } | null>(null)
 
   const name = firstName(profile?.display_name, session?.user?.email)
   const today = todayStr()
