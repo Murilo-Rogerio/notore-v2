@@ -24,7 +24,8 @@ export default function App() {
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
-
+              <Route path="/reset" element={<Reset />} />
+              
               {/* Área protegida: exige sessão e fornece os dados do usuário */}
               <Route element={<RequireAuth />}>
                 <Route path="/share" element={<Share />} />
