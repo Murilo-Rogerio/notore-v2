@@ -185,6 +185,28 @@ export default function Login() {
             </Button>
           </form>
 
+                    {mode === 'signin' && (
+            <button
+              type="button"
+              className="mt-3 text-[13px] font-medium text-ink-2 underline-offset-4 transition hover:text-accent hover:underline"
+              onClick={async () => {
+                setError(null)
+                setNotice(null)
+                if (!email.includes('@')) {
+                  setError('Digite seu e-mail no campo acima e clique aqui de novo.')
+                  return
+                }
+                const { error } = await supabase!.auth.resetPasswordForEmail(email, {
+                  redirectTo: `${window.location.origin}/reset`,
+                })
+                if (error) setError(authErrorMessage(error))
+                else setNotice(`Enviamos um link de recuperação para ${email}. Abra o e-mail e toque no link.`)
+              }}
+            >
+              Esqueci minha senha
+            </button>
+          )}
+          
           <div className="my-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-3">
             <span className="h-px flex-1 bg-hairline/15" /> ou <span className="h-px flex-1 bg-hairline/15" />
           </div>
