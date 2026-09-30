@@ -8,7 +8,6 @@ export type LinkMeta = {
   thumbnail: string | null
 }
 
-/** Normaliza o que o usuário colou em uma URL válida (ou null). */
 export function normalizeUrl(raw: string): string | null {
   const t = raw.trim()
   if (!t) return null
@@ -22,7 +21,6 @@ export function normalizeUrl(raw: string): string | null {
   }
 }
 
-/** Às vezes a URL chega escondida dentro do campo "text" do compartilhamento. */
 export function extractUrl(text: string | null): string | null {
   if (!text) return null
   const m = text.match(/https?:\/\/[^\s<>"']+/i)
@@ -48,21 +46,13 @@ async function fetchJson(url: string, timeoutMs = 7000): Promise<Record<string, 
   try {
     const res = await fetch(url, { signal: ctrl.signal })
     if (!res.ok) throw new Error(String(res.status))
-    return res.json()
+    return (await res.json()) as Record<string, unknown>
   } finally {
     clearTimeout(timer)
   }
 }
 
-/**
- * Extração de metadados: usa o oEmbed público (sem chave, com CORS liberado)
- * de YouTube e TikTok. Para Instagram e links genéricos, mantém o título
- * que veio junto do compartilhamento e um fallback visual elegante no card.
- */
-export async function fetchLinkMeta(
-  url: string,
-  fallbackTitle?: string | null,
-): Promise<LinkMeta> {
+export async function fetchLinkMeta(url: string, fallbackTitle?: string | null): Promise<LinkMeta> {
   const provider = detectProvider(url)
   const meta: LinkMeta = {
     url,
@@ -91,7 +81,7 @@ export async function fetchLinkMeta(
       }
     }
   } catch {
-    // Offline, timeout ou bloqueio — segue com o fallback, nunca quebra o fluxo.
+    // offline, timeout ou bloqueio — segue com o fallback
   }
   return meta
 }
