@@ -9,7 +9,7 @@ import { Button, EmptyState, FilterTags, Page, Skeleton } from '../components/ui
 export default function Notes() {
   const { notes, tags, loading } = useData()
   const [filter, setFilter] = useState<string | null>(null)
-  const [editor, setEditor] = useState<{ note: Note | null; kind: NoteKind; due?: string | null } | null>(null)
+  const [editor, setEditor] = useState<{ note: Note | null; kind?: NoteKind; due?: string | null } | null>(null)
 
   const filtered = filter ? notes.filter((n) => n.tag_ids?.includes(filter)) : notes
 
