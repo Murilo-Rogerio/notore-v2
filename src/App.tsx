@@ -12,6 +12,7 @@ import Media from './pages/Media'
 import Tags from './pages/Tags'
 import Share from './pages/Share'
 import Settings from './pages/Settings'
+import Reset from './pages/Reset'
 
 export default function App() {
   if (!isSupabaseConfigured) return <SetupNotice />
