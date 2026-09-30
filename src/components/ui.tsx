@@ -53,9 +53,10 @@ export function GoogleIcon({ size = 16 }: { size?: number }) {
 
 /* ---------- Primitivos ---------- */
 
-type ButtonProps = Omit<HTMLMotionProps<'button'>, 'ref'> & {
+type ButtonProps = Omit<HTMLMotionProps<'button'>, 'ref' | 'children'> & {
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
+  children?: ReactNode
   variant?: 'primary' | 'ghost' | 'soft' | 'danger'
   size?: 'sm' | 'md'
   loading?: boolean
