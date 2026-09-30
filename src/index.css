@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens de tema (tripletas RGB para permitir /alpha em qualquer lugar) */
+:root {
+  --bg: 244 244 241;
+  --surface: 255 255 255;
+  --ink: 24 27 32;
+  --ink-2: 95 102 114;
+  --ink-3: 152 159 171;
+  --hairline: 20 26 36;
+  --accent: 224 80 44;
+  --accent-ink: 255 251 248;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 11 13 17;
+  --surface: 255 255 255;
+  --ink: 236 239 244;
+  --ink-2: 148 156 170;
+  --ink-3: 99 107 123;
+  --hairline: 255 255 255;
+  --accent: 255 122 89;
+  --accent-ink: 30 15 8;
+  color-scheme: dark;
+}
+
+html {
+  background-color: rgb(var(--bg));
+}
+
+body {
+  @apply bg-transparent font-sans text-ink antialiased;
+  min-height: 100dvh;
+  /* Atmosfera sutil por trás do glassmorphism */
+  background-image:
+    radial-gradient(900px 520px at 12% -8%, rgba(120, 110, 96, 0.1), transparent 60%),
+    radial-gradient(760px 520px at 105% 108%, rgba(224, 80, 44, 0.05), transparent 55%);
+}
+
+.dark body {
+  background-image:
+    radial-gradient(1000px 560px at 14% -10%, rgba(96, 128, 176, 0.09), transparent 60%),
+    radial-gradient(900px 620px at 106% 110%, rgba(255, 122, 89, 0.05), transparent 55%);
+}
+
+/* Grain de filme, bem discreto, por cima de tudo */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.25);
+}
+
+@layer components {
+  /* Card bento: superfície translúcida + blur + borda hairline */
+  .card {
+    @apply rounded-3xl border border-hairline/10 bg-surface/80 shadow-card backdrop-blur-xl dark:bg-surface/[0.04] dark:shadow-none;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-hairline/10 bg-surface/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-ink-2 dark:bg-surface/10;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-hairline/15 bg-surface/60 px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-ink-3/70 focus:border-accent/60 focus:ring-[3px] focus:ring-accent/15 dark:bg-surface/[0.06];
+  }
+
+  .icon-btn {
+    @apply inline-flex size-9 items-center justify-center rounded-xl border border-hairline/10 text-ink-2 transition hover:border-hairline/25 hover:bg-surface/5 hover:text-ink;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
