@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, type HTMLMotionProps } from 'framer-motion'
 import { AlertCircle, CalendarDays, Check, CheckCircle2, Loader2, Trash2, X, Inbox } from 'lucide-react'
 import {
   createContext,
@@ -53,7 +53,9 @@ export function GoogleIcon({ size = 16 }: { size?: number }) {
 
 /* ---------- Primitivos ---------- */
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = Omit<HTMLMotionProps<'button'>, 'ref'> & {
+  type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
   variant?: 'primary' | 'ghost' | 'soft' | 'danger'
   size?: 'sm' | 'md'
   loading?: boolean
@@ -76,8 +78,7 @@ export function Button({
         'inline-flex items-center justify-center gap-2 rounded-xl font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-accent/40 disabled:pointer-events-none disabled:opacity-60',
         size === 'sm' ? 'px-3 py-1.5 text-[13px]' : 'px-4 py-2.5 text-sm',
         variant === 'primary' && 'bg-accent text-accent-ink shadow-glow hover:bg-accent/90',
-        variant === 'ghost' &&
-          'border border-hairline/15 text-ink hover:border-hairline/30 hover:bg-surface/5',
+        variant === 'ghost' && 'border border-hairline/15 text-ink hover:border-hairline/30 hover:bg-surface/5',
         variant === 'soft' && 'border border-hairline/10 bg-surface/10 text-ink hover:bg-surface/15',
         variant === 'danger' && 'border border-red-500/30 text-red-500 hover:bg-red-500/10 dark:text-red-400',
         className,
