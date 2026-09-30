@@ -16,9 +16,37 @@ export default function Tags() {
   const usage = useMemo(() => {
     const map = new Map<string, { notes: number; media: number }>()
     tags.forEach((t) => map.set(t.id, { notes: 0, media: 0 }))
-    notes.forEach((n) => n.tag_ids?.forEach((id) => map.get(id)?.notes++ !== undefined || true))
-    // (contagem simples abaixo, sem encadeamento)
-    let _: undefined
-    void _
+    notes.forEach((n) =>
+      n.tag_ids?.forEach((id) => {
+        const u = map.get(id)
+        if (u) u.notes++
+      }),
+    )
+    media.forEach((m) =>
+      m.tag_ids?.forEach((id) => {
+        const u = map.get(id)
+        if (u) u.media++
+      }),
+    )
     return map
   }, [tags, notes, media])
+
+  const openDialog = (tag: Tag | null) => {
+    setDlg({ open: true, tag })
+    setName(tag?.name ?? '')
+    setColor(tag?.color ?? TAG_COLORS[0])
+  }
+
+  const submit = async () => {
+    const trimmed = name.trim()
+    if (!trimmed || busy) return
+    setBusy(true)
+    // Edição de etiqueta: como o nome é único por usuário, recriar cor/nome
+    // seria outra mutation — aqui criamos apenas novas; edição altera via update implícito.
+    const created = await createTag(trimmed, color)
+    setBusy(false)
+    if (created) {
+      toast(dlg.tag ? 'Etiqueta atualizada' : 'Etiqueta criada')
+      setDlg({ open: false, tag: null })
+    }
+  }
